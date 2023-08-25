@@ -1,0 +1,148 @@
+html, body{
+    margin: 0;
+    padding: 1rem;
+    background-color: black;
+    min-height: 100vh;
+    font-family: cursive;
+    color: white;
+    text-align: center;
+}
+
+h1{
+    font-size: 3rem;
+}
+
+.outer{
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.container1{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.searchbar{
+    position: relative;
+    width: 38vw;
+    display: flex;
+    flex-direction: row;
+    /* height: auto; */
+}
+
+#search{
+    border: 0;
+    padding: 0.5rem;
+    border-radius:8px;
+    width: inherit;
+    background-color: rgb(215, 210, 210);
+    min-height: 2.5rem;
+    font-size: 1.25rem;
+}
+
+#search:focus{
+    outline: none;
+}
+
+.place_list{
+    position: absolute;
+    width: inherit;
+    max-height: 17rem;
+    overflow: auto;
+    overflow-x: hidden;
+    background-color: rgb(215, 210, 210);
+    top: 110%;
+    left: 0.3%;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+    /* padding-bottom: 0.2rem; */
+}
+
+.list_item{
+    width: inherit;
+    color: black;
+    min-height: 45px;
+    background-color: rgb(215, 210, 210);
+    width: 35vw;
+    padding: 0.5rem 0;
+    padding-left: 15px;
+    font-size: 1.5rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.list_item:hover{
+    background-color: rgb(172, 167, 167);
+    scale: 1.075;
+    transform: translateX(20px);
+}
+
+.inner{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15vw;
+    align-items: center;
+    margin-left: 12vw;
+}
+
+.box{
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0.1px 0.1px 13px 1px grey;
+}
+
+#box4{
+    width: 20vw;
+    height: 40vw;
+}
+
+.section2{
+    display: flex;
+    flex-direction: column;
+    gap: 7rem;
+}
+
+.container2{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+}
+
+.container2 > div{
+    width: 17vw;
+    height: 13vw;
+}
+
+#box3{
+    height: 20vw;
+    width: 45vw;
+}
+
+.img_container{
+    position: absolute;
+    top: 12%;
+    left: 92%;
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+img{
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}

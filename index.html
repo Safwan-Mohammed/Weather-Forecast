@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <h1>Weather Forecast</h1>
+    <div class="outer">
+        <div class="container1">
+            <div class="searchbar">
+                <input id="search" type="text" placeholder="Enter The Location" oninput="input_changed()">
+                <div class="img_container"  onclick="current_location()">
+                    <img src="location.png">
+                </div>
+                <div tabindex="0" class="place_list" id="list"></div>
+            </div>
+        </div>
+        <div class="inner">
+            <div class="section1">
+                <div class = "box" id="box4"></div>
+            </div>
+            <div class="section2">
+                <div class="container2">
+                    <div class = "box" id="box1"></div>
+                    <div class = "box" id="box2"></div>
+                </div>
+                <div class="container3">
+                    <div class = "box" id="box3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
