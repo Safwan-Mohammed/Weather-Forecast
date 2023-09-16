@@ -39,25 +39,29 @@ async function autocomplete(location, type) {
     .then((response) => response.json())
     .then((result) => (api_response = result));
 
-  let obj = {}
-  obj[type === "address" ? "name" : "suburb"] = ""
-  obj.county = ""
-  obj.state = ""
-  obj.country = ""
-  obj.lon = ""
-  obj.lat = ""
+  let obj = {};
+  obj[type === "address" ? "name" : "suburb"] = "";
+  obj.county = "";
+  obj.state = "";
+  obj.country = "";
+  obj.lon = "";
+  obj.lat = "";
 
   if (list.firstChild) {
     while (list.firstChild) {
       list.firstChild.remove();
     }
   }
+
+  obj_search_list = [];
+
   while (count < api_response.features.length) {
     let a = {};
     for (i = 0; i < Object.keys(obj).length; i++) {
       a[Object.keys(obj)[i]] =
         api_response.features[count].properties[Object.keys(obj)[i]];
     }
+    obj_search_list.push(a);
     if (type === "coordinates") {
       search_div.value = generate_search_string(a);
     } else {
@@ -65,6 +69,8 @@ async function autocomplete(location, type) {
     }
     count++;
   }
+
+  listItemsClicked(obj_search_list);
 }
 
 function updateSearchList(obj) {
@@ -90,13 +96,16 @@ function generate_search_string(obj) {
   return str;
 }
 
-function listItemsClicked(obj) {
+function listItemsClicked(obj_search_list) {
   let location_list = document.getElementsByClassName("list_item");
   for (let i = 0; i < location_list.length; i++) {
     location_list[i].addEventListener("click", () => {
       document.getElementById("search").value = location_list[i].innerHTML;
       document.getElementById("list").style.display = "none";
-      object_recieved(obj);
+      let temp = obj_search_list[i];
+      if (temp && temp.lat !== undefined && temp.lon !== undefined) {
+        object_received(temp);
+      }
     });
   }
 }
@@ -115,56 +124,70 @@ function onError() {
   console.log(`Failed to get your location!`);
 }
 
-function object_recieved(obj){
-  let a = document.getElementById("box1");
-  let b = document.getElementById("box2");
-  let link = `http://api.weatherapi.com/v1/forecast.json?key=3605460f65b34df89f3144948231608&q=${obj.lat},${obj.lon}&days=10&aqi=no&alerts=no`
-  fetchWeatherData(link)
-}
+async function fetchWeatherData(link) {
+  let api_response = await fetch(link).then((response) => response.json());
+  let currentWeather = {};
+  currentWeather.current_temp = api_response.current.temp_c;
+  currentWeather.text = api_response.current.condition.text;
+  currentWeather.icon = api_response.current.condition.icon;
+  let date = new Date();
+  let currentHour = date.getHours();
+  let hourlyWeather = [];
+  let dailyWeather = [];
 
-async function fetchWeatherData(link){
-  let api_response = await fetch(link).then((response) => response.json())
-  let currentWeather = {}
-  currentWeather.current_temp = api_response.current.temp_c
-  currentWeather.text = api_response.current.condition.text
-  currentWeather.icon = api_response.current.condition.icon
-  console.log(currentWeather)
-  let date = new Date()
-  let currentHour = date.getHours()
-  let hourlyWeather = []
-  let dailyWeather = []
-
-  for(let i = currentHour ; i < 24 ; i++ ){
-    if(hourlyWeather.length != 10){
-      let response =  api_response.forecast.forecastday[0].hour[i]
-      let obj = {}
-      obj.current_temp = parseInt(response.temp_c)
-      obj.current_time = response.time.slice(11)
-      obj.text = response.condition.text
-      obj.icon = response.condition.icon
-      hourlyWeather.push(obj)
-    }
-    else{
-      break
+  for (let i = currentHour; i < 24; i++) {
+    if (hourlyWeather.length != 10) {
+      let response = api_response.forecast.forecastday[0].hour[i];
+      let obj = {};
+      obj.current_temp = parseInt(response.temp_c);
+      obj.current_time = response.time.slice(11);
+      obj.text = response.condition.text;
+      obj.icon = response.condition.icon;
+      hourlyWeather.push(obj);
+    } else {
+      break;
     }
   }
-    while(hourlyWeather.length <= 10){
-      let response =  api_response.forecast.forecastday[1].hour[hourlyWeather.length-1]
-      let obj = {}
-      obj.current_temp =  parseInt(response.temp_c)
-      obj.current_time = response.time.slice(11)
-      obj.text = response.condition.text
-      obj.icon = response.condition.icon
-      hourlyWeather.push(obj)
-    }
-    let response = api_response.forecast.forecastday
-    for(let i = 0 ; i < response.length ;i++){
-      let obj = {}
-      obj.date = response[i].date
-      obj.text = response[i].day.condition.text;
-      obj.icon = response[i].day.condition.icon;
-      obj.max_temp = parseInt(response[i].day.maxtemp_c)
-      obj.min_temp = parseInt(response[i].day.mintemp_c)
-      dailyWeather.push(obj)
-    }
+  let i = 0
+  while (hourlyWeather.length < 10) {
+    let response =
+      api_response.forecast.forecastday[1].hour[i++];
+    let obj = {};
+    obj.current_temp = parseInt(response.temp_c);
+    obj.current_time = response.time.slice(11);
+    obj.text = response.condition.text;
+    obj.icon = response.condition.icon;
+    hourlyWeather.push(obj);
+  }
+  let response = api_response.forecast.forecastday;
+  for (let i = 0; i < response.length; i++) {
+    let obj = {};
+    obj.date = response[i].date;
+    obj.text = response[i].day.condition.text;
+    obj.icon = response[i].day.condition.icon;
+    obj.max_temp = parseInt(response[i].day.maxtemp_c);
+    obj.min_temp = parseInt(response[i].day.mintemp_c);
+    dailyWeather.push(obj);
+  }
+  return [currentWeather, hourlyWeather, dailyWeather];
+}
+
+async function object_received(obj) {
+  let a = document.getElementById("box1");
+  let b = document.getElementById("box2");
+  let c = document.getElementsByClassName("hourly_weather")
+  let link = `http://api.weatherapi.com/v1/forecast.json?key=3605460f65b34df89f3144948231608&q=${obj.lat},${obj.lon}&days=10&aqi=no&alerts=no`;
+  let result = await fetchWeatherData(link);
+  let currentWeather = result[0]
+  b.getElementsByTagName("img")[0].src = currentWeather.icon
+  let hourlyWeather = result[1]
+  let dailyWeather = result[2]
+  a.innerHTML = parseInt(currentWeather.current_temp)+"&deg;C"
+  b.getElementsByClassName("text")[0].innerHTML = currentWeather.text
+  for(let i = 0 ; i < hourlyWeather.length ; i++){
+    c[i].getElementsByTagName("img")[0].src = hourlyWeather[i].icon
+    c[i].getElementsByClassName("time")[0].innerHTML = hourlyWeather[i].current_time
+    c[i].getElementsByClassName("text")[0].innerHTML = hourlyWeather[i].text
+    c[i].getElementsByClassName("temperature")[0].innerHTML = hourlyWeather[i].current_temp+"&deg;C"
+  }
 }

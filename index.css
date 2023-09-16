@@ -3,7 +3,6 @@ html, body{
     padding: 1rem;
     background-color: black;
     min-height: 100vh;
-    font-family: cursive;
     color: white;
     text-align: center;
 }
@@ -96,37 +95,22 @@ h1{
     margin-left: 12vw;
 }
 
-.box{
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0.1px 0.1px 13px 1px grey;
-}
-
-#box4{
-    width: 20vw;
-    height: 40vw;
-}
-
 .section2{
     display: flex;
     flex-direction: column;
-    gap: 7rem;
+    align-items: center;
+    gap: 5rem;
 }
 
 .container2{
     display: flex;
     flex-direction:row;
-    justify-content: space-between;
+    gap: 8rem;
 }
 
 .container2 > div{
     width: 17vw;
     height: 13vw;
-}
-
-#box3{
-    height: 20vw;
-    width: 45vw;
 }
 
 .img_container{
@@ -141,8 +125,109 @@ h1{
     cursor: pointer;
 }
 
+.box{
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0.1px 0.1px 13px 1px grey;
+}
+
+#box1{
+    font-size: 5rem;
+}
+
+#box2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
 img{
-    object-fit: contain;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.icon_container{
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+}
+
+#box2 > .icon_container{
+    width: 7rem;
+    height: 7rem;
+}
+
+#box2 > .text{
+    font-size: 1.7rem;
+    word-break:break-all ;
+}
+
+#box2 > .icon_container > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#box3{
+    height: auto;
+    width: auto;
+    padding: 15px;
+    gap: 0.65rem;
+    word-break:keep-all;
+}
+
+#box4{
+    width: 20vw;
+    height: 40vw;
+}
+
+.hourly_weather{
+    padding: 0.25rem;
+    width: 3.5rem;
+    min-height:8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.hourly_weather > .temperature{
+    font-size: 1.35rem;
+}
+
+.hourly_weather > .icon_container{
+    height: 4rem;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.hourly_weather > .icon_container > img{
+    height: 70%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.hourly_weather > .time{
+    min-height: 2rem;
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+}
+
+.hourly_weather > .text{
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.day{
+    height: auto;
+    width: inherit;
 }
