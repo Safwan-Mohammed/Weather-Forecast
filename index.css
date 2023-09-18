@@ -92,7 +92,7 @@ h1{
     justify-content: center;
     gap: 15vw;
     align-items: center;
-    margin-left: 12vw;
+    margin-left: 3vw;
 }
 
 .section2{
@@ -183,11 +183,6 @@ img{
     word-break:keep-all;
 }
 
-#box4{
-    width: 20vw;
-    height: 40vw;
-}
-
 .hourly_weather{
     padding: 0.25rem;
     width: 3.5rem;
@@ -227,7 +222,65 @@ img{
     align-items: center;
 }
 
+
+#box4{
+    min-width: 20vw;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
 .day{
     height: auto;
     width: inherit;
+    display: flex;
+    padding: 0.5rem;
+
+}
+
+.left_container{
+    height: inherit;
+    min-width: 13vw;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.left_container > .date{
+    display: flex;
+    align-items: left;
+    font-size: 1.5rem;
+}
+
+.left_container > .status{
+    display: flex;
+    align-items: left;
+    font-size: 1.2rem;
+    word-break: keep-all;
+}
+
+.right_container{
+    height: inherit;
+    width: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.right_container > .icon_container{
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.right_container > .temperature{
+    display: flex;
+    font-size: 1.2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
 }

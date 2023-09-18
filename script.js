@@ -130,8 +130,12 @@ async function fetchWeatherData(link) {
   currentWeather.current_temp = api_response.current.temp_c;
   currentWeather.text = api_response.current.condition.text;
   currentWeather.icon = api_response.current.condition.icon;
-  let date = new Date();
-  let currentHour = date.getHours();
+  let time = api_response.current.last_updated.slice(11,13);
+  if(time.slice(0,1) == "0"){
+    currentHour = time.slice(1,2)
+  }else{
+    currentHour = time
+  }
   let hourlyWeather = [];
   let dailyWeather = [];
 
@@ -175,7 +179,6 @@ async function fetchWeatherData(link) {
 async function object_received(obj) {
   let a = document.getElementById("box1");
   let b = document.getElementById("box2");
-  let c = document.getElementsByClassName("hourly_weather")
   let link = `http://api.weatherapi.com/v1/forecast.json?key=3605460f65b34df89f3144948231608&q=${obj.lat},${obj.lon}&days=10&aqi=no&alerts=no`;
   let result = await fetchWeatherData(link);
   let currentWeather = result[0]
@@ -184,10 +187,21 @@ async function object_received(obj) {
   let dailyWeather = result[2]
   a.innerHTML = parseInt(currentWeather.current_temp)+"&deg;C"
   b.getElementsByClassName("text")[0].innerHTML = currentWeather.text
+
+  let c = document.getElementsByClassName("hourly_weather")
   for(let i = 0 ; i < hourlyWeather.length ; i++){
     c[i].getElementsByTagName("img")[0].src = hourlyWeather[i].icon
     c[i].getElementsByClassName("time")[0].innerHTML = hourlyWeather[i].current_time
     c[i].getElementsByClassName("text")[0].innerHTML = hourlyWeather[i].text
     c[i].getElementsByClassName("temperature")[0].innerHTML = hourlyWeather[i].current_temp+"&deg;C"
+  }
+
+  let d = document.getElementsByClassName("day")
+  for(let i = 0 ; i < dailyWeather.length ; i++){
+    d[i].getElementsByClassName("date")[0].innerHTML = dailyWeather[i].date
+    d[i].getElementsByClassName("status")[0].innerHTML = dailyWeather[i].text
+    d[i].getElementsByTagName("img")[0].src = dailyWeather[i].icon
+    d[i].getElementsByClassName("max_temp")[0].innerHTML = dailyWeather[i].max_temp+"&deg;C"
+    d[i].getElementsByClassName("min_temp")[0].innerHTML = dailyWeather[i].min_temp+"&deg;C"
   }
 }
