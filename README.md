@@ -1,4 +1,4 @@
-# Weather Forecast App
+# Weather Forecast Web-App
 
 Weather Forecast is a web-based application that provides users with up-to-date weather information for their current location and for locations around the world. This README provides an overview of the project, its features, and how to set it up for development or use.
 
